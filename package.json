@@ -1,0 +1,35 @@
+{
+  "name": "clothing-recycling",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "node bin/www",
+    "dev": "./node_modules/.bin/nodemon bin/www",
+    "prod": "pm2 start bin/www",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "f2elint-scan": "f2elint scan",
+    "f2elint-fix": "f2elint fix"
+  },
+  "dependencies": {
+    "@koa/cors": "^5.0.0",
+    "chalk": "4.1.2",
+    "dayjs": "^1.11.12",
+    "debug": "^4.1.1",
+    "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-json": "^2.0.2",
+    "koa-onerror": "^4.1.0",
+    "koa-response-handler": "^2.1.0",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "f2elint commit-file-scan",
+      "commit-msg": "f2elint commit-msg-scan"
+    }
+  }
+}
