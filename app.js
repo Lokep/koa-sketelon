@@ -1,13 +1,7 @@
 const Koa = require('koa');
 const app = new Koa();
 
-
-// const onerror = require('koa-onerror');
-
-// // error handler
-// onerror(app);
-
-
+const jwt = require('koa-jwt');
 
 
 /**
@@ -38,9 +32,7 @@ app.use(json());
  */
 const logger = require('./middleware/logger.middleware');
 
-app.use((ctx, next) => {
-  logger(ctx, next);
-})
+app.use(logger)
 
 
 
@@ -86,14 +78,13 @@ app.use(require('koa-static')(__dirname + '/assets'));
 
 /**
  * !本地缓存
- * @see https://github.com/koajs/cash
  */
 
 const cache = require('./middleware/cache.middleware')
 
-app.use((ctx, next) => {
+app.use(async (ctx, next) => {
   ctx.cache = cache;
-  next();
+  await next();
 })
 
 

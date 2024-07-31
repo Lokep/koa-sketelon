@@ -8,8 +8,6 @@ module.exports = async function (ctx, next) {
   const { method, url } = ctx.request;
   const { status, message } = ctx.response;
 
-  console.log(ctx.response);
-
   const successTagstyle = {
     backgroundColor: Chalk.bgGreen,
     color: Chalk.white,
@@ -37,5 +35,11 @@ module.exports = async function (ctx, next) {
 
   const timeStyle = delta < 300 ? succesTextStyle : errorTextStyle;
 
-  console.log(`${tagStyle.backgroundColor('「' + method + '」')} ${textStyle.color(url)} ${textStyle.color('-')} ${textStyle.color(status)} ${textStyle.color('-')} ${timeStyle.color(delta + 'ms')} ${textStyle.color(message)}`);
+  console.log(
+    `${tagStyle.backgroundColor('「' + method + '」')} ${textStyle.color(url)} ${textStyle.color(
+      '-',
+    )} ${textStyle.color(status)} ${textStyle.color('-')} ${timeStyle.color(
+      delta + 'ms',
+    )} ${textStyle.color(message)}`,
+  );
 };
