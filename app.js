@@ -1,7 +1,8 @@
 const Koa = require('koa');
 const app = new Koa();
 
-const jwt = require('koa-jwt');
+
+
 
 
 /**
@@ -48,9 +49,34 @@ app.use(cors());
 
 
 
+// error-handling
+app.on('error', (err, ctx) => {
+  console.error('[server error]: ', JSON.stringify(err));
+
+  if (err.message === 'Authentication Error') {
+    return ctx.response.unauthorized(Error(-1, 'Unauthorized'))
+  }
+
+});
 
 
 
+
+/**
+ * jwt验证
+ */
+const jwt = require('koa-jwt');
+const jwtConfig = require('./config/jwt.config');
+const { verifyToken } = require('./middleware/jwt-verify.middleware');
+
+app.use(
+  // jwt({
+  //   secret: jwtConfig.secret,
+  // }).unless({
+  //   path: jwtConfig.unlessPath,
+  // })
+  verifyToken
+);
 
 
 
@@ -99,6 +125,7 @@ app.use(async (ctx, next) => {
  */
 const index = require('./routes/index');
 const users = require('./routes/users');
+const { Error } = require('./constant/result');
 
 
 app.use(index.routes(), index.allowedMethods());
@@ -114,12 +141,5 @@ app.use(users.routes(), users.allowedMethods());
 
 
 
-// error-handling
-app.on('error', (err, ctx) => {
-  console.error('server error', err, ctx);
-  ctx.body = {
-    message: 'server error',
-  };
-});
 
 module.exports = app;
